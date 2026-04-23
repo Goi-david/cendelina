@@ -1,0 +1,1736 @@
+<?php
+session_start();
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cendelina Trading Ltd — Global Logistics & Import Solutions</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Syne + DM Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- AOS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <!-- Swiper -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+    <style>
+        :root {
+            --navy: #04111F;
+            --navy-mid: #0D1F3C;
+            --blue: #2563EB;
+            --blue-bright: #60A5FA;
+            --orange: #FF6B1A;
+            --orange-dark: #E8500A;
+            --gold: #FBBF24;
+            --cyan: #06B6D4;
+            --purple: #8B5CF6;
+            --pink: #EC4899;
+            --green: #10B981;
+            --white: #FFFFFF;
+            --off-white: #F0F4FF;
+            --gray-light: #DDE3F0;
+            --gray: #8898AA;
+            --gray-dark: #4A5568;
+            --text: #1A2336;
+
+            --font-display: 'Syne', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+
+            --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            --ease-sharp: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--off-white);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* ─── SCROLLBAR ─── */
+        ::-webkit-scrollbar { width: 7px; }
+        ::-webkit-scrollbar-track { background: var(--navy); }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--orange), var(--pink)); border-radius: 99px; }
+
+        /* ─── LOADER ─── */
+        #loader {
+            position: fixed; inset: 0;
+            background: var(--navy);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            z-index: 99999;
+            transition: opacity 0.9s var(--ease-smooth), visibility 0.9s;
+        }
+        #loader.hidden { opacity: 0; visibility: hidden; }
+        .loader-ring {
+            width: 72px; height: 72px;
+            border: 3px solid rgba(249,115,22,0.2);
+            border-top-color: var(--orange);
+            border-radius: 50%;
+            animation: spin 0.9s linear infinite;
+        }
+        .loader-brand {
+            margin-top: 24px;
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            letter-spacing: 6px;
+            color: rgba(255,255,255,0.5);
+            text-transform: uppercase;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ─── SCROLL PROGRESS ─── */
+        #scrollProgress {
+            position: fixed; top: 0; left: 0; height: 3px;
+            background: linear-gradient(90deg, var(--blue), var(--orange));
+            width: 0%; z-index: 10001;
+            transition: width 0.1s linear;
+        }
+
+        /* ─── NAVBAR ─── */
+        #navbar {
+            position: fixed; top: 0; width: 100%;
+            padding: 18px 0;
+            transition: all 0.4s var(--ease-smooth);
+            z-index: 9999;
+        }
+        #navbar.scrolled {
+            background: rgba(10, 22, 40, 0.97);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            padding: 10px 0;
+            box-shadow: 0 4px 32px rgba(0,0,0,0.4);
+            border-bottom: 1px solid rgba(249,115,22,0.12);
+        }
+
+        /* Brand */
+        .nav-brand {
+            display: flex; align-items: center; gap: 12px;
+            text-decoration: none; flex-shrink: 0;
+        }
+        .nav-logo {
+            width: 42px; height: 42px;
+            background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; color: white; flex-shrink: 0;
+        }
+        .nav-brand-text h2 {
+            font-family: var(--font-display);
+            font-size: 1rem; font-weight: 700;
+            color: white; margin: 0; line-height: 1.2;
+        }
+        .nav-brand-text span {
+            font-size: 0.58rem; color: rgba(255,255,255,0.45);
+            letter-spacing: 2px; text-transform: uppercase;
+        }
+
+        /* Toggler */
+        .nav-toggler {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 8px; padding: 8px 12px;
+            cursor: pointer; display: none;
+        }
+        .nav-toggler i { color: white; font-size: 1rem; }
+
+        /* Nav wrapper */
+        .nav-menu-wrap {
+            display: flex; align-items: center; gap: 4px;
+        }
+        .nav-actions {
+            display: flex; align-items: center; gap: 8px;
+        }
+        @media (min-width: 992px) {
+            .nav-menu-wrap { gap: 0; }
+        }
+
+        /* Nav list */
+        .nav-menu {
+            display: flex; align-items: center;
+            gap: 2px; list-style: none;
+            margin: 0; padding: 0;
+        }
+        .nav-menu > li { position: relative; }
+        .nav-menu > li > a,
+        .nav-menu > li > .nav-top-link {
+            font-family: var(--font-display);
+            font-size: 0.83rem; font-weight: 600;
+            color: rgba(255,255,255,0.82);
+            padding: 8px 13px;
+            border-radius: 7px;
+            text-decoration: none;
+            display: flex; align-items: center; gap: 5px;
+            letter-spacing: 0.3px;
+            transition: color 0.25s, background 0.25s;
+            white-space: nowrap;
+            cursor: pointer;
+            background: transparent; border: none;
+        }
+        .nav-menu > li > a:hover,
+        .nav-menu > li > .nav-top-link:hover,
+        .nav-menu > li.has-dropdown:hover > a,
+        .nav-menu > li.has-dropdown:hover > .nav-top-link {
+            color: white;
+            background: rgba(255,255,255,0.07);
+        }
+        .nav-menu > li > a .caret,
+        .nav-menu > li > .nav-top-link .caret {
+            font-size: 0.6rem;
+            transition: transform 0.3s var(--ease-smooth);
+            opacity: 0.6;
+        }
+        .nav-menu > li.has-dropdown:hover > a .caret,
+        .nav-menu > li.has-dropdown:hover > .nav-top-link .caret {
+            transform: rotate(180deg);
+        }
+
+        /* Divider line under link on hover */
+        .nav-menu > li > a::after,
+        .nav-menu > li > .nav-top-link::after { display: none; }
+
+        /* ── STANDARD DROPDOWN ── */
+        .nav-dropdown {
+            position: absolute; top: calc(100% + 10px); left: 0;
+            min-width: 210px;
+            background: rgba(10, 22, 40, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            padding: 8px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            opacity: 0; visibility: hidden;
+            transform: translateY(8px);
+            transition: opacity 0.25s var(--ease-smooth),
+                        transform 0.25s var(--ease-smooth),
+                        visibility 0.25s;
+            list-style: none;
+            z-index: 10000;
+        }
+        .nav-menu > li.has-dropdown:hover > .nav-dropdown {
+            opacity: 1; visibility: visible; transform: translateY(0);
+        }
+        .nav-dropdown li a {
+            display: flex; align-items: center; gap: 10px;
+            padding: 9px 14px;
+            border-radius: 9px;
+            font-family: var(--font-body);
+            font-size: 0.85rem; font-weight: 500;
+            color: rgba(255,255,255,0.75);
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s, padding-left 0.2s;
+        }
+        .nav-dropdown li a:hover {
+            background: rgba(249,115,22,0.1);
+            color: var(--orange);
+            padding-left: 18px;
+        }
+        .nav-dropdown li a i {
+            width: 18px; font-size: 0.78rem;
+            color: var(--orange); opacity: 0.8;
+            flex-shrink: 0;
+        }
+        .nav-dropdown .dd-divider {
+            height: 1px; background: rgba(255,255,255,0.07);
+            margin: 6px 8px;
+        }
+        .nav-dropdown .dd-label {
+            padding: 6px 14px 3px;
+            font-family: var(--font-display);
+            font-size: 0.62rem; font-weight: 700;
+            color: rgba(255,255,255,0.3);
+            letter-spacing: 2px; text-transform: uppercase;
+        }
+
+        /* ── MEGA DROPDOWN (Products) ── */
+        .nav-mega {
+            position: absolute; top: calc(100% + 10px); left: 50%;
+            transform: translateX(-50%) translateY(8px);
+            width: 580px;
+            background: rgba(10, 22, 40, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.55);
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.25s var(--ease-smooth),
+                        transform 0.25s var(--ease-smooth),
+                        visibility 0.25s;
+            z-index: 10000;
+        }
+        .nav-menu > li.has-mega:hover > .nav-mega {
+            opacity: 1; visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+        .mega-header {
+            font-family: var(--font-display);
+            font-size: 0.62rem; font-weight: 700;
+            letter-spacing: 2px; text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+            padding: 0 6px 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            margin-bottom: 14px;
+        }
+        .mega-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
+        }
+        .mega-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .mega-item:hover { background: rgba(249,115,22,0.1); transform: translateY(-1px); }
+        .mega-item-icon {
+            width: 34px; height: 34px; flex-shrink: 0;
+            background: rgba(249,115,22,0.1);
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.85rem; color: var(--orange);
+            transition: background 0.2s;
+        }
+        .mega-item:hover .mega-item-icon { background: rgba(249,115,22,0.2); }
+        .mega-item-text strong {
+            display: block; font-family: var(--font-display);
+            font-size: 0.82rem; font-weight: 600;
+            color: rgba(255,255,255,0.88);
+            margin-bottom: 1px;
+        }
+        .mega-item-text span {
+            font-size: 0.72rem; color: rgba(255,255,255,0.38);
+        }
+        .mega-footer {
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .mega-footer a {
+            font-family: var(--font-display);
+            font-size: 0.78rem; font-weight: 700;
+            color: var(--orange); text-decoration: none;
+            display: flex; align-items: center; gap: 6px;
+            transition: gap 0.2s;
+        }
+        .mega-footer a:hover { gap: 10px; }
+
+        /* Quote button */
+        .btn-quote {
+            font-family: var(--font-display);
+            font-size: 0.82rem; font-weight: 700;
+            letter-spacing: 0.3px;
+            background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+            color: white;
+            border: none; border-radius: 8px;
+            padding: 9px 20px;
+            cursor: pointer;
+            transition: all 0.3s var(--ease-bounce);
+            text-decoration: none;
+            display: inline-flex; align-items: center; gap: 7px;
+            white-space: nowrap;
+        }
+        .btn-quote:hover {
+            color: white; transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(249,115,22,0.5);
+        }
+
+        /* ── MOBILE NAV ── */
+        @media (max-width: 991px) {
+            .nav-toggler { display: block; }
+            .nav-menu-wrap {
+                display: none;
+                position: absolute; top: 100%; left: 0; right: 0;
+                background: rgba(10, 22, 40, 0.98);
+                backdrop-filter: blur(20px);
+                border-bottom: 1px solid rgba(249,115,22,0.12);
+                padding: 16px 20px 24px;
+            }
+            .nav-menu-wrap.open { display: block; }
+            .nav-menu { flex-direction: column; align-items: stretch; gap: 2px; }
+            .nav-menu > li > a,
+            .nav-menu > li > .nav-top-link {
+                padding: 11px 14px; border-radius: 10px; width: 100%;
+                justify-content: space-between;
+            }
+            /* Mobile sub-menu */
+            .nav-dropdown,
+            .nav-mega {
+                position: static; opacity: 1; visibility: visible;
+                transform: none; box-shadow: none;
+                background: rgba(255,255,255,0.04);
+                border: none; border-radius: 10px;
+                padding: 6px 8px;
+                margin-top: 4px;
+                display: none;
+                backdrop-filter: none;
+            }
+            .nav-menu > li.mob-open > .nav-dropdown,
+            .nav-menu > li.mob-open > .nav-mega {
+                display: block;
+            }
+            .nav-mega { width: auto; }
+            .mega-grid { grid-template-columns: repeat(2, 1fr); }
+            .nav-actions { margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.08); }
+            .btn-quote { width: 100%; justify-content: center; padding: 12px; }
+        }
+
+        /* ─── HERO ─── */
+        .hero {
+            height: 100vh; min-height: 700px;
+            position: relative; overflow: hidden;
+        }
+        .hero-slides { position: absolute; inset: 0; }
+        .hero-slide {
+            position: absolute; inset: 0;
+            background-size: cover; background-position: center;
+            opacity: 0; transition: opacity 1.4s var(--ease-smooth);
+        }
+        .hero-slide::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(120deg, rgba(10,22,40,0.82) 0%, rgba(10,22,40,0.45) 60%, rgba(10,22,40,0.2) 100%);
+        }
+        .hero-slide.active { opacity: 1; }
+
+        #particles-js {
+            position: absolute; inset: 0; z-index: 1;
+        }
+        .hero-content-wrap {
+            position: absolute; inset: 0; z-index: 2;
+            display: flex; align-items: center;
+        }
+        .hero-tag {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(249,115,22,0.15);
+            border: 1px solid rgba(249,115,22,0.4);
+            color: var(--orange);
+            font-family: var(--font-display);
+            font-size: 0.72rem; font-weight: 700;
+            letter-spacing: 3px; text-transform: uppercase;
+            padding: 7px 16px; border-radius: 99px;
+            margin-bottom: 24px;
+        }
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.4rem, 6vw, 4.8rem);
+            font-weight: 800; color: white;
+            line-height: 1.08; margin-bottom: 20px;
+        }
+        .hero-title .accent { color: var(--orange); }
+        .hero-desc {
+            font-size: 1.05rem; color: rgba(255,255,255,0.75);
+            max-width: 520px; line-height: 1.75;
+            margin-bottom: 36px;
+        }
+        .hero-cta-group { display: flex; gap: 14px; flex-wrap: wrap; }
+        .btn-hero-primary {
+            font-family: var(--font-display); font-weight: 700;
+            font-size: 0.9rem; letter-spacing: 0.5px;
+            background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+            color: white; border: none; border-radius: 10px;
+            padding: 14px 30px;
+            transition: all 0.35s var(--ease-bounce);
+            text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+        }
+        .btn-hero-primary:hover {
+            color: white; transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(249,115,22,0.5);
+        }
+        .btn-hero-outline {
+            font-family: var(--font-display); font-weight: 700;
+            font-size: 0.9rem; letter-spacing: 0.5px;
+            background: transparent;
+            color: white; border: 2px solid rgba(255,255,255,0.5);
+            border-radius: 10px; padding: 12px 28px;
+            transition: all 0.35s var(--ease-smooth);
+            text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+        }
+        .btn-hero-outline:hover {
+            background: white; color: var(--navy);
+            border-color: white; transform: translateY(-3px);
+        }
+
+        /* Slide nav */
+        .hero-nav {
+            position: absolute; bottom: 44px; left: 50%;
+            transform: translateX(-50%);
+            display: flex; align-items: center; gap: 20px; z-index: 10;
+        }
+        .hero-nav-btn {
+            width: 42px; height: 42px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 50%; color: white;
+            font-size: 0.85rem; cursor: pointer;
+            backdrop-filter: blur(8px);
+            transition: all 0.3s var(--ease-bounce);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .hero-nav-btn:hover { background: var(--orange); border-color: var(--orange); transform: scale(1.1); }
+        .hero-dots { display: flex; gap: 8px; }
+        .hero-dot {
+            width: 8px; height: 8px; border-radius: 99px;
+            background: rgba(255,255,255,0.4);
+            cursor: pointer; transition: all 0.3s;
+        }
+        .hero-dot.active { background: var(--orange); width: 24px; }
+
+        /* Scroll mouse */
+        .scroll-cue {
+            position: absolute; bottom: 28px; right: 40px; z-index: 10;
+            display: flex; flex-direction: column; align-items: center; gap: 6px;
+        }
+        .scroll-cue span {
+            font-size: 0.62rem; color: rgba(255,255,255,0.45);
+            letter-spacing: 2px; text-transform: uppercase;
+            writing-mode: vertical-rl;
+        }
+        .scroll-line {
+            width: 1px; height: 50px;
+            background: linear-gradient(to bottom, var(--orange), transparent);
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+        @keyframes scrollPulse {
+            0%,100% { transform: scaleY(1); opacity: 1; }
+            50% { transform: scaleY(0.5); opacity: 0.4; }
+        }
+
+        /* ─── SECTION HEADER ─── */
+        .section-tag {
+            display: inline-block;
+            font-family: var(--font-display);
+            font-size: 0.7rem; font-weight: 700;
+            letter-spacing: 3px; text-transform: uppercase;
+            color: var(--orange);
+            background: rgba(249,115,22,0.1);
+            border: 1px solid rgba(249,115,22,0.3);
+            padding: 6px 16px; border-radius: 99px;
+            margin-bottom: 16px;
+        }
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+            font-weight: 800; color: var(--navy);
+            line-height: 1.15;
+        }
+        .section-title .accent { color: var(--orange); }
+        .section-sub { color: var(--gray-dark); font-size: 1rem; line-height: 1.7; margin-top: 12px; }
+
+        /* ─── STATS ─── */
+        .stats-section {
+            padding: 90px 0;
+            background: var(--navy);
+            position: relative; overflow: hidden;
+        }
+        .stats-section::before {
+            content: '';
+            position: absolute; inset: 0;
+            background:
+                radial-gradient(ellipse 70% 80% at 20% 50%, rgba(37,99,235,0.35) 0%, transparent 65%),
+                radial-gradient(ellipse 60% 70% at 80% 50%, rgba(255,107,26,0.25) 0%, transparent 65%),
+                radial-gradient(ellipse 50% 60% at 50% 0%, rgba(139,92,246,0.2) 0%, transparent 60%);
+        }
+        /* animated floating orbs */
+        .stats-section::after {
+            content: '';
+            position: absolute; top: -60px; right: -60px;
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(255,107,26,0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: floatOrb 8s ease-in-out infinite;
+        }
+        @keyframes floatOrb {
+            0%,100% { transform: translate(0,0) scale(1); }
+            33% { transform: translate(-30px, 20px) scale(1.1); }
+            66% { transform: translate(20px,-30px) scale(0.9); }
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 24px;
+            overflow: hidden;
+            position: relative; z-index: 1;
+        }
+        .stat-item {
+            padding: 48px 28px;
+            background: rgba(255,255,255,0.02);
+            text-align: center;
+            position: relative;
+            transition: background 0.4s;
+            overflow: hidden;
+        }
+        .stat-item::before {
+            content: '';
+            position: absolute; inset: 0;
+            opacity: 0; transition: opacity 0.4s;
+        }
+        .stat-item:nth-child(1)::before { background: linear-gradient(135deg, rgba(37,99,235,0.15), transparent); }
+        .stat-item:nth-child(2)::before { background: linear-gradient(135deg, rgba(255,107,26,0.15), transparent); }
+        .stat-item:nth-child(3)::before { background: linear-gradient(135deg, rgba(139,92,246,0.15), transparent); }
+        .stat-item:nth-child(4)::before { background: linear-gradient(135deg, rgba(6,182,212,0.15), transparent); }
+        .stat-item:hover::before { opacity: 1; }
+        .stat-item:hover { background: rgba(255,255,255,0.04); }
+        .stat-icon-wrap {
+            width: 58px; height: 58px;
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 18px;
+            position: relative; z-index: 1;
+        }
+        .stat-item:nth-child(1) .stat-icon-wrap { background: linear-gradient(135deg, #2563EB, #1D4ED8); box-shadow: 0 8px 24px rgba(37,99,235,0.4); }
+        .stat-item:nth-child(2) .stat-icon-wrap { background: linear-gradient(135deg, #FF6B1A, #E8500A); box-shadow: 0 8px 24px rgba(255,107,26,0.4); }
+        .stat-item:nth-child(3) .stat-icon-wrap { background: linear-gradient(135deg, #8B5CF6, #7C3AED); box-shadow: 0 8px 24px rgba(139,92,246,0.4); }
+        .stat-item:nth-child(4) .stat-icon-wrap { background: linear-gradient(135deg, #06B6D4, #0891B2); box-shadow: 0 8px 24px rgba(6,182,212,0.4); }
+        .stat-icon-wrap i { font-size: 1.5rem; color: white; }
+        .stat-num {
+            font-family: var(--font-display);
+            font-size: 3.2rem; font-weight: 800;
+            line-height: 1; margin-bottom: 8px;
+            position: relative; z-index: 1;
+        }
+        .stat-item:nth-child(1) .stat-num { color: #60A5FA; }
+        .stat-item:nth-child(2) .stat-num { color: #FF9F6B; }
+        .stat-item:nth-child(3) .stat-num { color: #C4B5FD; }
+        .stat-item:nth-child(4) .stat-num { color: #67E8F9; }
+        .stat-label { font-size: 0.83rem; color: rgba(255,255,255,0.5); letter-spacing: 0.5px; position: relative; z-index: 1; }
+
+        /* ─── ABOUT / INFO ─── */
+        .about-section {
+            padding: 110px 0;
+            background: linear-gradient(160deg, #EEF2FF 0%, #F0F4FF 40%, #FFF7F0 100%);
+            position: relative; overflow: hidden;
+        }
+        .about-section::before {
+            content: '';
+            position: absolute; top: -100px; left: -100px;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(37,99,235,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: floatOrb 10s ease-in-out infinite;
+        }
+        .about-section::after {
+            content: '';
+            position: absolute; bottom: -80px; right: -80px;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(255,107,26,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: floatOrb 12s ease-in-out infinite reverse;
+        }
+        .info-card {
+            background: white;
+            border: 1px solid rgba(255,255,255,0.8);
+            border-radius: 24px;
+            padding: 40px 36px;
+            height: 100%;
+            transition: all 0.45s var(--ease-smooth);
+            position: relative; overflow: hidden;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+            z-index: 1;
+        }
+        .info-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            border-radius: 24px 24px 0 0;
+        }
+        .info-card:nth-child(1)::before { background: linear-gradient(90deg, #2563EB, #60A5FA); }
+        .info-card:nth-child(2)::before { background: linear-gradient(90deg, #FF6B1A, #FBBF24); }
+        .info-card:nth-child(3)::before { background: linear-gradient(90deg, #8B5CF6, #EC4899); }
+        .info-card::after {
+            content: '';
+            position: absolute; inset: 0;
+            opacity: 0; transition: opacity 0.45s;
+            border-radius: 24px;
+        }
+        .info-card:nth-child(1)::after { background: linear-gradient(135deg, rgba(37,99,235,0.03), transparent 60%); }
+        .info-card:nth-child(2)::after { background: linear-gradient(135deg, rgba(255,107,26,0.03), transparent 60%); }
+        .info-card:nth-child(3)::after { background: linear-gradient(135deg, rgba(139,92,246,0.03), transparent 60%); }
+        .info-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 32px 64px rgba(0,0,0,0.1);
+            border-color: rgba(255,255,255,1);
+        }
+        .info-card:hover::after { opacity: 1; }
+        .ic-icon {
+            width: 66px; height: 66px;
+            border-radius: 18px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 24px;
+        }
+        .info-card:nth-child(1) .ic-icon { background: linear-gradient(135deg, #2563EB, #1D4ED8); box-shadow: 0 10px 30px rgba(37,99,235,0.35); }
+        .info-card:nth-child(2) .ic-icon { background: linear-gradient(135deg, #FF6B1A, #E8500A); box-shadow: 0 10px 30px rgba(255,107,26,0.35); }
+        .info-card:nth-child(3) .ic-icon { background: linear-gradient(135deg, #8B5CF6, #7C3AED); box-shadow: 0 10px 30px rgba(139,92,246,0.35); }
+        .ic-icon i { font-size: 1.7rem; color: white; }
+        .ic-title {
+            font-family: var(--font-display);
+            font-size: 1.35rem; font-weight: 700;
+            color: var(--navy); margin-bottom: 14px;
+        }
+        .ic-text { color: var(--gray-dark); font-size: 0.95rem; line-height: 1.75; }
+        .feature-list { list-style: none; padding: 0; margin-top: 20px; }
+        .feature-list li {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 0; font-size: 0.93rem; color: var(--gray-dark);
+            border-bottom: 1px solid var(--gray-light);
+        }
+        .feature-list li:last-child { border-bottom: none; }
+        .feature-list li i { color: var(--orange); font-size: 0.9rem; }
+
+        .process-steps { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .step {
+            display: flex; align-items: center; gap: 14px;
+            padding: 12px 16px;
+            background: var(--off-white);
+            border-radius: 12px;
+            transition: all 0.3s;
+            cursor: default;
+        }
+        .step:hover { background: rgba(255,107,26,0.07); transform: translateX(7px); }
+        .step-num {
+            width: 36px; height: 36px; flex-shrink: 0;
+            background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+            border-radius: 10px;
+            font-family: var(--font-display);
+            font-weight: 700; font-size: 0.85rem;
+            color: white;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 12px rgba(255,107,26,0.35);
+        }
+        .step span { font-size: 0.92rem; color: var(--gray-dark); font-weight: 500; }
+
+        /* ─── CATEGORIES ─── */
+        .categories-section {
+            padding: 110px 0;
+            background: var(--navy);
+            position: relative; overflow: hidden;
+        }
+        .categories-section::before {
+            content: '';
+            position: absolute; inset: 0;
+            background:
+                radial-gradient(ellipse 60% 50% at 0% 50%, rgba(37,99,235,0.2) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 40% at 100% 50%, rgba(139,92,246,0.18) 0%, transparent 60%),
+                radial-gradient(ellipse 40% 35% at 50% 100%, rgba(255,107,26,0.12) 0%, transparent 60%);
+        }
+        /* animated star dots */
+        .categories-section::after {
+            content: '';
+            position: absolute; inset: 0;
+            background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .cat-card {
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 20px; padding: 34px 24px;
+            text-align: center;
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(10px);
+            transition: all 0.45s var(--ease-bounce);
+            cursor: default;
+            position: relative; z-index: 1; overflow: hidden;
+        }
+        .cat-card::before {
+            content: '';
+            position: absolute; inset: 0; border-radius: 20px;
+            opacity: 0; transition: opacity 0.4s;
+        }
+        /* unique gradient per card */
+        .cat-card[data-color="blue"]::before   { background: linear-gradient(135deg, rgba(37,99,235,0.18), rgba(37,99,235,0.04)); }
+        .cat-card[data-color="orange"]::before { background: linear-gradient(135deg, rgba(255,107,26,0.18), rgba(255,107,26,0.04)); }
+        .cat-card[data-color="purple"]::before { background: linear-gradient(135deg, rgba(139,92,246,0.18), rgba(139,92,246,0.04)); }
+        .cat-card[data-color="cyan"]::before   { background: linear-gradient(135deg, rgba(6,182,212,0.18), rgba(6,182,212,0.04)); }
+        .cat-card[data-color="pink"]::before   { background: linear-gradient(135deg, rgba(236,72,153,0.18), rgba(236,72,153,0.04)); }
+        .cat-card[data-color="green"]::before  { background: linear-gradient(135deg, rgba(16,185,129,0.18), rgba(16,185,129,0.04)); }
+        .cat-card[data-color="gold"]::before   { background: linear-gradient(135deg, rgba(251,191,36,0.18), rgba(251,191,36,0.04)); }
+        .cat-card[data-color="red"]::before    { background: linear-gradient(135deg, rgba(239,68,68,0.18), rgba(239,68,68,0.04)); }
+        .cat-card:hover { transform: translateY(-14px) scale(1.02); border-color: rgba(255,255,255,0.15); box-shadow: 0 28px 60px rgba(0,0,0,0.4); }
+        .cat-card:hover::before { opacity: 1; }
+        .cat-icon-wrap {
+            width: 72px; height: 72px;
+            border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 20px;
+            transition: all 0.4s var(--ease-bounce);
+            position: relative; z-index: 1;
+        }
+        /* colored icon backgrounds */
+        .cat-card[data-color="blue"]   .cat-icon-wrap { background: linear-gradient(135deg, #2563EB, #1D4ED8); box-shadow: 0 8px 20px rgba(37,99,235,0.45); }
+        .cat-card[data-color="orange"] .cat-icon-wrap { background: linear-gradient(135deg, #FF6B1A, #E8500A); box-shadow: 0 8px 20px rgba(255,107,26,0.45); }
+        .cat-card[data-color="purple"] .cat-icon-wrap { background: linear-gradient(135deg, #8B5CF6, #7C3AED); box-shadow: 0 8px 20px rgba(139,92,246,0.45); }
+        .cat-card[data-color="cyan"]   .cat-icon-wrap { background: linear-gradient(135deg, #06B6D4, #0891B2); box-shadow: 0 8px 20px rgba(6,182,212,0.45); }
+        .cat-card[data-color="pink"]   .cat-icon-wrap { background: linear-gradient(135deg, #EC4899, #DB2777); box-shadow: 0 8px 20px rgba(236,72,153,0.45); }
+        .cat-card[data-color="green"]  .cat-icon-wrap { background: linear-gradient(135deg, #10B981, #059669); box-shadow: 0 8px 20px rgba(16,185,129,0.45); }
+        .cat-card[data-color="gold"]   .cat-icon-wrap { background: linear-gradient(135deg, #FBBF24, #D97706); box-shadow: 0 8px 20px rgba(251,191,36,0.45); }
+        .cat-card[data-color="red"]    .cat-icon-wrap { background: linear-gradient(135deg, #EF4444, #DC2626); box-shadow: 0 8px 20px rgba(239,68,68,0.45); }
+        .cat-card:hover .cat-icon-wrap { transform: scale(1.12) rotate(-4deg); }
+        .cat-icon-wrap i { font-size: 1.8rem; color: white; position: relative; z-index: 1; }
+        .cat-title {
+            font-family: var(--font-display);
+            font-weight: 700; font-size: 0.98rem;
+            color: rgba(255,255,255,0.92); margin-bottom: 8px;
+            position: relative; z-index: 1;
+        }
+        .cat-sub { font-size: 0.82rem; color: rgba(255,255,255,0.45); position: relative; z-index: 1; }
+
+        /* ─── SHOWCASE ─── */
+        .showcase-section { padding: 100px 0; background: var(--navy); position: relative; overflow: hidden; }
+        .showcase-section::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse 70% 50% at 50% 100%, rgba(249,115,22,0.08), transparent);
+        }
+        .showcase-card {
+            border-radius: 20px; overflow: hidden;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            transition: all 0.5s var(--ease-smooth);
+        }
+        .showcase-card:hover { transform: translateY(-10px); box-shadow: 0 32px 80px rgba(0,0,0,0.5); }
+        .showcase-img { height: 280px; overflow: hidden; }
+        .showcase-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s var(--ease-smooth); }
+        .showcase-card:hover .showcase-img img { transform: scale(1.08); }
+        .showcase-overlay {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 32px 24px 24px;
+            background: linear-gradient(to top, rgba(10,22,40,0.95) 0%, transparent 100%);
+        }
+        .showcase-overlay h4 {
+            font-family: var(--font-display); font-weight: 700;
+            font-size: 1.1rem; color: white; margin-bottom: 4px;
+        }
+        .showcase-overlay p { font-size: 0.85rem; color: rgba(255,255,255,0.6); }
+
+        /* ─── PARTNERS ─── */
+        .partners-section { padding: 70px 0; background: var(--off-white); }
+        .partner-item {
+            display: flex; flex-direction: column;
+            align-items: center; gap: 10px;
+            padding: 24px 16px;
+            border-radius: 16px;
+            filter: grayscale(1) opacity(0.45);
+            transition: all 0.35s;
+            cursor: default;
+        }
+        .partner-item:hover { filter: grayscale(0) opacity(1); transform: scale(1.05); }
+        .partner-item i { font-size: 2.4rem; color: var(--navy); }
+        .partner-item span { font-family: var(--font-display); font-size: 0.78rem; font-weight: 600; color: var(--gray-dark); letter-spacing: 0.5px; }
+
+        /* ─── TEAM ─── */
+        .team-section { padding: 100px 0; background: white; }
+        .team-card {
+            border-radius: 20px; overflow: hidden;
+            border: 1px solid var(--gray-light);
+            transition: all 0.4s var(--ease-smooth);
+            background: white;
+        }
+        .team-card:hover { transform: translateY(-10px); box-shadow: 0 24px 60px rgba(0,0,0,0.1); border-color: transparent; }
+        .team-img { height: 260px; overflow: hidden; position: relative; }
+        .team-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .team-card:hover .team-img img { transform: scale(1.06); }
+        .team-img::after {
+            content: '';
+            position: absolute; bottom: 0; left: 0; right: 0;
+            height: 60px;
+            background: linear-gradient(to top, white, transparent);
+        }
+        .team-info { padding: 20px 24px 24px; text-align: center; }
+        .team-name {
+            font-family: var(--font-display); font-weight: 700;
+            font-size: 1.05rem; color: var(--navy); margin-bottom: 4px;
+        }
+        .team-role { font-size: 0.82rem; color: var(--orange); font-weight: 500; letter-spacing: 0.5px; margin-bottom: 14px; }
+        .team-socials { display: flex; gap: 8px; justify-content: center; }
+        .team-soc-btn {
+            width: 32px; height: 32px;
+            background: var(--off-white); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--navy); font-size: 0.75rem;
+            transition: all 0.3s var(--ease-bounce);
+            text-decoration: none;
+        }
+        .team-soc-btn:hover { background: var(--orange); color: white; transform: translateY(-3px); }
+
+        /* ─── TESTIMONIALS ─── */
+        .testimonials-section { padding: 100px 0; background: var(--off-white); }
+        .testi-card {
+            background: white; border-radius: 20px;
+            padding: 40px 36px;
+            border: 1px solid var(--gray-light);
+            transition: all 0.4s var(--ease-smooth);
+            height: 100%;
+        }
+        .testi-card:hover { transform: translateY(-8px); box-shadow: 0 20px 48px rgba(0,0,0,0.08); }
+        .testi-quote {
+            font-size: 3rem; color: var(--orange);
+            font-family: Georgia, serif;
+            line-height: 1; margin-bottom: 16px;
+        }
+        .testi-text { font-size: 0.97rem; color: var(--gray-dark); line-height: 1.75; margin-bottom: 24px; }
+        .testi-stars { color: var(--gold); font-size: 0.8rem; margin-bottom: 16px; }
+        .testi-author {
+            display: flex; align-items: center; gap: 12px;
+            padding-top: 16px;
+            border-top: 1px solid var(--gray-light);
+        }
+        .testi-avatar {
+            width: 44px; height: 44px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--orange), var(--blue));
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-family: var(--font-display); font-weight: 700; font-size: 1rem;
+        }
+        .testi-auth-name { font-family: var(--font-display); font-weight: 600; font-size: 0.9rem; color: var(--navy); }
+        .testi-auth-co { font-size: 0.78rem; color: var(--gray); }
+
+        /* ─── NEWSLETTER ─── */
+        .newsletter-section { padding: 80px 0; background: var(--navy); position: relative; overflow: hidden; }
+        .newsletter-section::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(26,86,219,0.25), transparent);
+        }
+        .newsletter-inner {
+            position: relative; text-align: center;
+            max-width: 580px; margin: 0 auto;
+        }
+        .newsletter-inner h3 {
+            font-family: var(--font-display); font-size: 2.2rem; font-weight: 800;
+            color: white; margin-bottom: 12px;
+        }
+        .newsletter-inner p { color: rgba(255,255,255,0.6); font-size: 0.97rem; margin-bottom: 32px; }
+        .newsletter-form { display: flex; gap: 12px; }
+        .newsletter-input {
+            flex: 1; padding: 14px 20px;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.06);
+            border-radius: 10px; color: white;
+            font-family: var(--font-body); font-size: 0.95rem;
+            backdrop-filter: blur(8px);
+        }
+        .newsletter-input::placeholder { color: rgba(255,255,255,0.35); }
+        .newsletter-input:focus { outline: none; border-color: var(--orange); }
+        .newsletter-btn {
+            padding: 14px 28px;
+            background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+            border: none; border-radius: 10px;
+            color: white; font-family: var(--font-display); font-weight: 700;
+            font-size: 0.9rem; cursor: pointer;
+            transition: all 0.35s var(--ease-bounce);
+            white-space: nowrap;
+        }
+        .newsletter-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(249,115,22,0.5); }
+
+        /* ─── FOOTER ─── */
+        .footer {
+            background: #060E1C;
+            padding: 72px 0 24px;
+            border-top: 1px solid rgba(255,255,255,0.04);
+        }
+        .footer-logo-wrap { margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+        .footer-logo {
+            width: 40px; height: 40px;
+            background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; color: white;
+        }
+        .footer-brand-name {
+            font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: white;
+        }
+        .footer-desc { color: var(--gray); font-size: 0.88rem; line-height: 1.7; margin-bottom: 24px; }
+        .footer-socials { display: flex; gap: 10px; }
+        .footer-soc {
+            width: 36px; height: 36px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 50%; border: 1px solid rgba(255,255,255,0.08);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--gray); font-size: 0.8rem;
+            transition: all 0.3s var(--ease-bounce);
+            text-decoration: none;
+        }
+        .footer-soc:hover { background: var(--orange); border-color: var(--orange); color: white; transform: translateY(-3px); }
+        .footer-heading {
+            font-family: var(--font-display); font-weight: 700;
+            font-size: 0.85rem; color: white;
+            text-transform: uppercase; letter-spacing: 1.5px;
+            margin-bottom: 20px;
+        }
+        .footer-links { list-style: none; padding: 0; }
+        .footer-links li { margin-bottom: 10px; }
+        .footer-links a {
+            color: var(--gray); font-size: 0.88rem; text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex; align-items: center; gap: 6px;
+        }
+        .footer-links a::before {
+            content: '→'; font-size: 0.7rem;
+            opacity: 0; transform: translateX(-6px);
+            transition: all 0.3s;
+        }
+        .footer-links a:hover { color: var(--orange); padding-left: 4px; }
+        .footer-links a:hover::before { opacity: 1; transform: translateX(0); }
+        .footer-contact-item {
+            display: flex; align-items: flex-start; gap: 12px;
+            color: var(--gray); font-size: 0.88rem;
+            margin-bottom: 12px;
+        }
+        .footer-contact-item i { color: var(--orange); margin-top: 2px; font-size: 0.85rem; }
+        .footer-divider {
+            border-color: rgba(255,255,255,0.06);
+            margin: 48px 0 24px;
+        }
+        .footer-bottom-text { color: rgba(255,255,255,0.25); font-size: 0.82rem; }
+        .footer-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: rgba(249,115,22,0.1);
+            border: 1px solid rgba(249,115,22,0.2);
+            color: var(--orange); font-size: 0.72rem; font-weight: 600;
+            letter-spacing: 1px; padding: 4px 12px; border-radius: 99px;
+        }
+
+        /* ─── BACK TO TOP ─── */
+        #backToTop {
+            position: fixed; bottom: 28px; right: 28px;
+            width: 46px; height: 46px;
+            background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+            border: none; border-radius: 12px;
+            color: white; font-size: 1rem;
+            cursor: pointer; z-index: 9999;
+            box-shadow: 0 8px 24px rgba(249,115,22,0.45);
+            opacity: 0; visibility: hidden;
+            transition: all 0.4s var(--ease-bounce);
+            display: flex; align-items: center; justify-content: center;
+        }
+        #backToTop.visible { opacity: 1; visibility: visible; }
+        #backToTop:hover { transform: translateY(-4px) scale(1.05); }
+
+        /* ─── UTILITY ─── */
+        .divider-orange {
+            width: 48px; height: 3px;
+            background: linear-gradient(90deg, var(--orange), var(--gold));
+            border-radius: 99px; margin: 16px 0;
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 991px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 767px) {
+            .hero-title { font-size: 2rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .newsletter-form { flex-direction: column; }
+        }
+        @media (max-width: 576px) {
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .hero-cta-group { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Loader -->
+<div id="loader">
+    <div class="loader-ring"></div>
+    <div class="loader-brand">Cendelina Trading</div>
+</div>
+
+<!-- Scroll Progress -->
+<div id="scrollProgress"></div>
+
+<!-- Back to Top -->
+<button id="backToTop"><i class="fas fa-arrow-up"></i></button>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav id="navbar">
+    <div class="container">
+        <div class="d-flex align-items-center justify-content-between" style="position:relative;">
+
+            <!-- Brand -->
+            <a href="#" class="nav-brand">
+                <div class="nav-logo"><i class="fas fa-ship"></i></div>
+                <div class="nav-brand-text">
+                    <h2>Cendelina Trading Ltd</h2>
+                    <span>Logistics &amp; Import Solutions</span>
+                </div>
+            </a>
+
+            <!-- Mobile toggle -->
+            <button class="nav-toggler" id="navToggler" aria-label="Toggle menu">
+                <i class="fas fa-bars" id="togglerIcon"></i>
+            </button>
+
+            <!-- Nav menu -->
+            <div class="nav-menu-wrap" id="navMenuWrap">
+                <ul class="nav-menu" id="navMenu">
+
+                    <!-- Home -->
+                    <li><a href="#">Home</a></li>
+
+                    <!-- About dropdown -->
+                    <li class="has-dropdown">
+                        <a href="about.php" class="nav-top-link">
+                            About <i class="fas fa-chevron-down caret"></i>
+                        </a>
+                        <ul class="nav-dropdown">
+                            <li class="dd-label">Company</li>
+                            <li><a href="about.php"><i class="fas fa-building"></i> Our Story</a></li>
+                            <li><a href="about.php#mission"><i class="fas fa-bullseye"></i> Mission &amp; Vision</a></li>
+                            <li><a href="about.php#team"><i class="fas fa-users"></i> Our Team</a></li>
+                            <li class="dd-divider"></li>
+                            <li class="dd-label">More</li>
+                            <li><a href="about.php#why-us"><i class="fas fa-star"></i> Why Choose Us</a></li>
+                            <li><a href="about.php#process"><i class="fas fa-route"></i> Import Process</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Products mega-menu -->
+                    <li class="has-dropdown has-mega">
+                        <a href="products.php" class="nav-top-link">
+                            Products <i class="fas fa-chevron-down caret"></i>
+                        </a>
+                        <div class="nav-mega">
+                            <div class="mega-header">Product Categories</div>
+                            <div class="mega-grid">
+                                <a href="products.php?cat=tech" class="mega-item">
+                                    <div class="mega-item-icon"><i class="fas fa-laptop-code"></i></div>
+                                    <div class="mega-item-text"><strong>Technology &amp; IT</strong><span>Laptops, Servers, CCTV</span></div>
+                                </a>
+                                <a href="products.php?cat=building" class="mega-item">
+                                    <div class="mega-item-icon"><i class="fas fa-hard-hat"></i></div>
+                                    <div class="mega-item-text"><strong>Building Materials</strong><span>Cement, Steel, Pipes</span></div>
+                                </a>
+                                <a href="products.php?cat=auto" class="mega-item">
+                                    <div class="mega-item-icon"><i class="fas fa-car"></i></div>
+                                    <div class="mega-item-text"><strong>Cars &amp; Spares</strong><span>Vehicles, Parts, Tyres</span></div>
+                                </a>
+                                <a href="products.php?cat=office" class="mega-item">
+                                    <div class="mega-item-icon"><i class="fas fa-print"></i></div>
+                                    <div class="mega-item-text"><strong>Office Essentials</strong><span>Printers, Stationery</span></div>
+                                </a>
+                                <a href="products.php?cat=safety" class="mega-item">
+                                    <div class="mega-item-icon"><i class="fas fa-helmet-safety"></i></div>
+                                    <div class="mega-item-text"><strong>Safety Equipment</strong><span>Helmets, Vests, Boots</span></div>
+                                </a>
+                                <a href="products.php?cat=tools" class="mega-item">
+                                    <div class="mega-item-icon"><i class="fas fa-tools"></i></div>
+                                    <div class="mega-item-text"><strong>Machinery &amp; Tools</strong><span>Generators, Drills</span></div>
+                                </a>
+                                <a href="products.php?cat=furniture" class="mega-item">
+                                    <div class="mega-item-icon"><i class="fas fa-couch"></i></div>
+                                    <div class="mega-item-text"><strong>Furniture</strong><span>Desks, Chairs, Cabinets</span></div>
+                                </a>
+                                <a href="products.php?cat=general" class="mega-item">
+                                    <div class="mega-item-icon"><i class="fas fa-box-open"></i></div>
+                                    <div class="mega-item-text"><strong>General Trade</strong><span>FMCG &amp; Consumables</span></div>
+                                </a>
+                            </div>
+                            <div class="mega-footer">
+                                <span style="font-size:0.78rem;color:rgba(255,255,255,0.35);">8 categories available</span>
+                                <a href="products.php">View all products <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </li>
+
+                    <!-- Services dropdown -->
+                    <li class="has-dropdown">
+                        <a href="#" class="nav-top-link">
+                            Services <i class="fas fa-chevron-down caret"></i>
+                        </a>
+                        <ul class="nav-dropdown">
+                            <li><a href="#"><i class="fas fa-ship"></i> Freight Forwarding</a></li>
+                            <li><a href="#"><i class="fas fa-warehouse"></i> Warehousing</a></li>
+                            <li><a href="#"><i class="fas fa-file-alt"></i> Customs Clearance</a></li>
+                            <li><a href="#"><i class="fas fa-truck"></i> Local Delivery</a></li>
+                            <li class="dd-divider"></li>
+                            <li><a href="#"><i class="fas fa-search"></i> Product Sourcing</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Contact -->
+                    <li><a href="contact.php">Contact</a></li>
+
+                </ul>
+
+                <!-- Actions -->
+                <div class="nav-actions d-flex align-items-center gap-2 ms-lg-3">
+                    <a href="admin-login.php" style="font-family:var(--font-display);font-size:0.8rem;font-weight:600;color:rgba(255,255,255,0.55);text-decoration:none;padding:8px 10px;border-radius:7px;transition:color 0.2s,background 0.2s;white-space:nowrap;" onmouseover="this.style.color='white';this.style.background='rgba(255,255,255,0.07)'" onmouseout="this.style.color='rgba(255,255,255,0.55)';this.style.background='transparent'">
+                        <i class="fas fa-lock me-1"></i> Admin
+                    </a>
+                    <a href="#" class="btn-quote">Get Quote <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+    <div id="particles-js"></div>
+    <div class="hero-slides">
+        <div class="hero-slide active" style="background-image:url('https://images.unsplash.com/photo-1518770660439-4636190af475?w=1600');"></div>
+        <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1600');"></div>
+        <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=1600');"></div>
+    </div>
+
+    <div class="hero-content-wrap">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-xl-7" id="heroText">
+                    <div class="hero-tag"><i class="fas fa-globe-africa"></i> <span>Serving South Sudan &amp; Beyond</span></div>
+                    <h1 class="hero-title" id="heroTitle">Technology &amp; <span class="accent">Electronics</span> Import</h1>
+                    <p class="hero-desc" id="heroDesc">Latest laptops, servers, networking gear, CCTV systems, and IT equipment sourced from trusted global suppliers with end-to-end logistics.</p>
+                    <div class="hero-cta-group">
+                        <a href="#" class="btn-hero-primary">Explore Products <i class="fas fa-arrow-right"></i></a>
+                        <a href="#" class="btn-hero-outline"><i class="fas fa-envelope"></i> Request Quote</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-nav">
+        <button class="hero-nav-btn" id="heroPrev"><i class="fas fa-chevron-left"></i></button>
+        <div class="hero-dots" id="heroDots">
+            <span class="hero-dot active"></span>
+            <span class="hero-dot"></span>
+            <span class="hero-dot"></span>
+        </div>
+        <button class="hero-nav-btn" id="heroNext"><i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <div class="scroll-cue">
+        <div class="scroll-line"></div>
+        <span>Scroll</span>
+    </div>
+</section>
+
+<!-- ═══ STATS ═══ -->
+<section class="stats-section">
+    <div class="container position-relative">
+        <div class="stats-grid">
+            <div class="stat-item" data-aos="fade-up" data-aos-delay="0">
+                <div class="stat-icon-wrap"><i class="fas fa-globe-africa"></i></div>
+                <div class="stat-num" data-target="15">0</div>
+                <div class="stat-label">Countries Sourced From</div>
+            </div>
+            <div class="stat-item" data-aos="fade-up" data-aos-delay="100">
+                <div class="stat-icon-wrap"><i class="fas fa-boxes"></i></div>
+                <div class="stat-num" data-target="8">0</div>
+                <div class="stat-label">Product Categories</div>
+            </div>
+            <div class="stat-item" data-aos="fade-up" data-aos-delay="200">
+                <div class="stat-icon-wrap"><i class="fas fa-users"></i></div>
+                <div class="stat-num" data-target="100">0</div>
+                <div class="stat-label">Happy Clients</div>
+            </div>
+            <div class="stat-item" data-aos="fade-up" data-aos-delay="300">
+                <div class="stat-icon-wrap"><i class="fas fa-shield-alt"></i></div>
+                <div class="stat-num" data-target="24">0</div>
+                <div class="stat-label">/7 Admin Monitoring</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ ABOUT / INFO ═══ -->
+<section class="about-section">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <div class="section-tag">Who We Are</div>
+            <h2 class="section-title">Your Trusted Import &amp; <span class="accent">Logistics Partner</span></h2>
+            <div class="divider-orange mx-auto"></div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-4" data-aos="fade-up" data-aos-delay="0">
+                <div class="info-card">
+                    <div class="ic-icon"><i class="fas fa-building"></i></div>
+                    <h3 class="ic-title">About Cendelina</h3>
+                    <p class="ic-text">A premier logistics and import company serving businesses across South Sudan and beyond. We specialise in sourcing high-quality products from verified global markets.</p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check-circle"></i> Global Sourcing Network</li>
+                        <li><i class="fas fa-check-circle"></i> Quality Assured Products</li>
+                        <li><i class="fas fa-check-circle"></i> Reliable Delivery Timelines</li>
+                        <li><i class="fas fa-check-circle"></i> Dedicated Account Management</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-4" data-aos="fade-up" data-aos-delay="120">
+                <div class="info-card">
+                    <div class="ic-icon"><i class="fas fa-ship"></i></div>
+                    <h3 class="ic-title">Our Import Process</h3>
+                    <p class="ic-text">Streamlined, transparent logistics from purchase order to your doorstep.</p>
+                    <div class="process-steps">
+                        <div class="step"><div class="step-num">1</div><span>Purchase Order Placement</span></div>
+                        <div class="step"><div class="step-num">2</div><span>Real-time Shipment Tracking</span></div>
+                        <div class="step"><div class="step-num">3</div><span>Customs Clearance</span></div>
+                        <div class="step"><div class="step-num">4</div><span>Warehouse Storage</span></div>
+                        <div class="step"><div class="step-num">5</div><span>Local Delivery</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4" data-aos="fade-up" data-aos-delay="240">
+                <div class="info-card">
+                    <div class="ic-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3 class="ic-title">Why Choose Us</h3>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check-circle"></i> End-to-end import tracking</li>
+                        <li><i class="fas fa-check-circle"></i> Dedicated system admin audit logs</li>
+                        <li><i class="fas fa-check-circle"></i> Competitive global pricing</li>
+                        <li><i class="fas fa-check-circle"></i> Reliable delivery timelines</li>
+                        <li><i class="fas fa-check-circle"></i> 24/7 customer support</li>
+                        <li><i class="fas fa-check-circle"></i> Quality guarantee</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ CATEGORIES ═══ -->
+<section class="categories-section">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <div class="section-tag">Our Products</div>
+            <h2 class="section-title">Everything Your Business <span class="accent">Needs</span></h2>
+            <p class="section-sub">Eight product categories sourced from global markets, delivered to your door.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="0">
+                <div class="cat-card">
+                    <div class="cat-icon-wrap"><i class="fas fa-laptop-code"></i></div>
+                    <div class="cat-title">Technology &amp; IT</div>
+                    <div class="cat-sub">Laptops, servers, networking, CCTV</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="80">
+                <div class="cat-card">
+                    <div class="cat-icon-wrap"><i class="fas fa-hard-hat"></i></div>
+                    <div class="cat-title">Building Materials</div>
+                    <div class="cat-sub">Cement, steel, pipes, wiring</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="160">
+                <div class="cat-card">
+                    <div class="cat-icon-wrap"><i class="fas fa-car"></i></div>
+                    <div class="cat-title">Cars &amp; Spare Parts</div>
+                    <div class="cat-sub">Vehicles, engines, tyres, batteries</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="240">
+                <div class="cat-card">
+                    <div class="cat-icon-wrap"><i class="fas fa-print"></i></div>
+                    <div class="cat-title">Office Essentials</div>
+                    <div class="cat-sub">Printers, paper, stationery</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="0">
+                <div class="cat-card">
+                    <div class="cat-icon-wrap"><i class="fas fa-helmet-safety"></i></div>
+                    <div class="cat-title">Safety Equipment</div>
+                    <div class="cat-sub">Helmets, boots, safety vests</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="80">
+                <div class="cat-card">
+                    <div class="cat-icon-wrap"><i class="fas fa-tools"></i></div>
+                    <div class="cat-title">Machinery &amp; Tools</div>
+                    <div class="cat-sub">Generators, drills, compressors</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="160">
+                <div class="cat-card">
+                    <div class="cat-icon-wrap"><i class="fas fa-couch"></i></div>
+                    <div class="cat-title">Furniture</div>
+                    <div class="cat-sub">Desks, chairs, filing cabinets</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="240">
+                <div class="cat-card">
+                    <div class="cat-icon-wrap"><i class="fas fa-box-open"></i></div>
+                    <div class="cat-title">General Trade</div>
+                    <div class="cat-sub">FMCG, consumables &amp; more</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ SHOWCASE ═══ -->
+<section class="showcase-section">
+    <div class="container position-relative">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <div class="section-tag" style="color:var(--orange)">Featured</div>
+            <h2 class="section-title" style="color:white">What We <span class="accent">Deliver</span></h2>
+            <p class="section-sub" style="color:rgba(255,255,255,0.5)">Quality products and services, from warehouse to your doorstep</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="0">
+                <div class="showcase-card">
+                    <div class="showcase-img"><img src="https://images.unsplash.com/photo-1558002038-1055907df827?w=600" alt="Warehouse"></div>
+                    <div class="showcase-overlay"><h4>Modern Warehousing</h4><p>State-of-the-art storage facilities</p></div>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="showcase-card">
+                    <div class="showcase-img"><img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600" alt="Logistics"></div>
+                    <div class="showcase-overlay"><h4>Efficient Logistics</h4><p>Fast and reliable delivery network</p></div>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="showcase-card">
+                    <div class="showcase-img"><img src="https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=600" alt="Shipping"></div>
+                    <div class="showcase-overlay"><h4>Global Shipping</h4><p>International freight forwarding</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ PARTNERS ═══ -->
+<section class="partners-section">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <div class="section-tag">Partners</div>
+            <h2 class="section-title">Trusted By <span class="accent">Industry Leaders</span></h2>
+        </div>
+        <div class="row justify-content-center g-2">
+            <div class="col-md-2 col-4" data-aos="fade-up" data-aos-delay="0"><div class="partner-item"><i class="fab fa-amazon"></i><span>Amazon Supply</span></div></div>
+            <div class="col-md-2 col-4" data-aos="fade-up" data-aos-delay="60"><div class="partner-item"><i class="fas fa-truck"></i><span>Maersk</span></div></div>
+            <div class="col-md-2 col-4" data-aos="fade-up" data-aos-delay="120"><div class="partner-item"><i class="fab fa-microsoft"></i><span>Microsoft</span></div></div>
+            <div class="col-md-2 col-4" data-aos="fade-up" data-aos-delay="180"><div class="partner-item"><i class="fas fa-hard-hat"></i><span>Caterpillar</span></div></div>
+            <div class="col-md-2 col-4" data-aos="fade-up" data-aos-delay="240"><div class="partner-item"><i class="fas fa-car"></i><span>Toyota</span></div></div>
+            <div class="col-md-2 col-4" data-aos="fade-up" data-aos-delay="300"><div class="partner-item"><i class="fas fa-microchip"></i><span>Intel</span></div></div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ TEAM ═══ -->
+<section class="team-section">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <div class="section-tag">Leadership</div>
+            <h2 class="section-title">The Team Behind <span class="accent">Cendelina</span></h2>
+            <p class="section-sub">Dedicated professionals ensuring your business needs are met.</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="0">
+                <div class="team-card">
+                    <div class="team-img"><img src="https://randomuser.me/api/portraits/men/32.jpg" alt="CEO"></div>
+                    <div class="team-info">
+                        <div class="team-name">John Deng</div>
+                        <div class="team-role">CEO &amp; Founder</div>
+                        <div class="team-socials">
+                            <a href="#" class="team-soc-btn"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="team-soc-btn"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="team-card">
+                    <div class="team-img"><img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Operations"></div>
+                    <div class="team-info">
+                        <div class="team-name">Sarah Abuk</div>
+                        <div class="team-role">Operations Director</div>
+                        <div class="team-socials">
+                            <a href="#" class="team-soc-btn"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="team-soc-btn"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="team-card">
+                    <div class="team-img"><img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Logistics"></div>
+                    <div class="team-info">
+                        <div class="team-name">Michael Chan</div>
+                        <div class="team-role">Logistics Manager</div>
+                        <div class="team-socials">
+                            <a href="#" class="team-soc-btn"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="team-soc-btn"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="team-card">
+                    <div class="team-img"><img src="https://randomuser.me/api/portraits/women/89.jpg" alt="Admin"></div>
+                    <div class="team-info">
+                        <div class="team-name">Grace Nyibol</div>
+                        <div class="team-role">System Administrator</div>
+                        <div class="team-socials">
+                            <a href="#" class="team-soc-btn"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="team-soc-btn"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ TESTIMONIALS ═══ -->
+<section class="testimonials-section">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <div class="section-tag">Testimonials</div>
+            <h2 class="section-title">What Our <span class="accent">Clients Say</span></h2>
+            <p class="section-sub">Trusted by businesses across South Sudan and the region.</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6" data-aos="fade-up" data-aos-delay="0">
+                <div class="testi-card">
+                    <div class="testi-quote">"</div>
+                    <div class="testi-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p class="testi-text">Cendelina handled our office setup import seamlessly. Their admin team kept us updated at every stage. Highly recommended for any business needing reliable logistics.</p>
+                    <div class="testi-author">
+                        <div class="testi-avatar">PO</div>
+                        <div><div class="testi-auth-name">Procurement Office</div><div class="testi-auth-co">Juba Corporate HQ</div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6" data-aos="fade-up" data-aos-delay="120">
+                <div class="testi-card">
+                    <div class="testi-quote">"</div>
+                    <div class="testi-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p class="testi-text">The best logistics partner we've worked with. Their tracking system and customer service are exceptional. Our construction supplies arrived on schedule and in perfect condition.</p>
+                    <div class="testi-author">
+                        <div class="testi-avatar">CC</div>
+                        <div><div class="testi-auth-name">Construction Company</div><div class="testi-auth-co">South Sudan</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ NEWSLETTER ═══ -->
+<section class="newsletter-section">
+    <div class="container position-relative">
+        <div class="newsletter-inner" data-aos="zoom-in">
+            <div class="section-tag mx-auto mb-3">Stay Updated</div>
+            <h3>Get the Latest<br>Products &amp; Offers</h3>
+            <p>Subscribe for new arrivals, pricing updates, and industry insights delivered to your inbox.</p>
+            <form class="newsletter-form">
+                <input type="email" class="newsletter-input" placeholder="your@email.com" required>
+                <button type="submit" class="newsletter-btn">Subscribe <i class="fas fa-paper-plane ms-1"></i></button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-4" data-aos="fade-up" data-aos-delay="0">
+                <div class="footer-logo-wrap">
+                    <div class="footer-logo"><i class="fas fa-ship"></i></div>
+                    <div class="footer-brand-name">Cendelina Trading Ltd</div>
+                </div>
+                <p class="footer-desc">Your trusted partner for global import and logistics solutions. Serving South Sudan and the wider region with quality products and reliable service.</p>
+                <div class="footer-socials">
+                    <a href="#" class="footer-soc"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="footer-soc"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="footer-soc"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="footer-soc"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="footer-soc"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-4 col-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="footer-heading">Quick Links</div>
+                <ul class="footer-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="about.php">About Us</a></li>
+                    <li><a href="products.php">Products</a></li>
+                    <li><a href="contact.php">Contact</a></li>
+                    <li><a href="admin-login.php">Admin Portal</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="footer-heading">Categories</div>
+                <ul class="footer-links">
+                    <li><a href="#">Technology &amp; IT</a></li>
+                    <li><a href="#">Building Materials</a></li>
+                    <li><a href="#">Cars &amp; Spare Parts</a></li>
+                    <li><a href="#">Office Essentials</a></li>
+                    <li><a href="#">Safety Equipment</a></li>
+                    <li><a href="#">Machinery &amp; Tools</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="footer-heading">Contact</div>
+                <div class="footer-contact-item"><i class="fas fa-envelope"></i><span>info@cendelina.com</span></div>
+                <div class="footer-contact-item"><i class="fas fa-phone"></i><span>+211 XXX XXX XXX</span></div>
+                <div class="footer-contact-item"><i class="fas fa-map-marker-alt"></i><span>Juba, South Sudan</span></div>
+                <div class="mt-3"><span class="footer-badge"><i class="fas fa-shield-alt"></i> System Monitored 24/7</span></div>
+            </div>
+        </div>
+
+        <hr class="footer-divider">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+            <p class="footer-bottom-text mb-0">&copy; 2026 Cendelina Trading Ltd. All rights reserved.</p>
+            <p class="footer-bottom-text mb-0">Admin portal — restricted access</p>
+        </div>
+    </div>
+</footer>
+
+<!-- ═══ SCRIPTS ═══ -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+<script>
+    // AOS
+    AOS.init({ duration: 800, once: true, offset: 80, easing: 'ease-out-quart' });
+
+    // Loader
+    window.addEventListener('load', () => {
+        setTimeout(() => document.getElementById('loader').classList.add('hidden'), 900);
+    });
+
+    // Navbar scroll
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        document.getElementById('scrollProgress').style.width = (scrolled / height * 100) + '%';
+        document.getElementById('navbar').classList.toggle('scrolled', scrolled > 60);
+        document.getElementById('backToTop').classList.toggle('visible', scrolled > 400);
+    });
+    document.getElementById('backToTop').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // Mobile toggle
+    const navToggler   = document.getElementById('navToggler');
+    const navMenuWrap  = document.getElementById('navMenuWrap');
+    const togglerIcon  = document.getElementById('togglerIcon');
+    navToggler.addEventListener('click', () => {
+        const open = navMenuWrap.classList.toggle('open');
+        togglerIcon.className = open ? 'fas fa-times' : 'fas fa-bars';
+    });
+
+    // Mobile sub-menu accordion (dropdown items with children)
+    if (window.innerWidth <= 991) {
+        document.querySelectorAll('#navMenu .has-dropdown > .nav-top-link').forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const li = link.closest('li');
+                li.classList.toggle('mob-open');
+            });
+        });
+    }
+
+    // Desktop: close menus when clicking outside
+    document.addEventListener('click', e => {
+        if (!e.target.closest('#navbar')) {
+            navMenuWrap.classList.remove('open');
+            togglerIcon.className = 'fas fa-bars';
+        }
+    });
+
+    // Desktop: position mega-menu so it doesn't go off-screen
+    const megaEl = document.querySelector('.nav-mega');
+    const megaParent = document.querySelector('.has-mega');
+    if (megaEl && megaParent) {
+        megaParent.addEventListener('mouseenter', () => {
+            const rect = megaEl.getBoundingClientRect();
+            if (rect.right > window.innerWidth) {
+                megaEl.style.left = 'auto';
+                megaEl.style.right = '0';
+                megaEl.style.transform = 'translateY(0)';
+            }
+            if (rect.left < 0) {
+                megaEl.style.left = '0';
+                megaEl.style.transform = 'translateY(0)';
+            }
+        });
+    }
+
+    // Particles
+    particlesJS('particles-js', {
+        particles: {
+            number: { value: 45, density: { enable: true, value_area: 900 } },
+            color: { value: ['#ffffff', '#F97316', '#3B82F6'] },
+            shape: { type: 'circle' },
+            opacity: { value: 0.35, random: true },
+            size: { value: 2, random: true },
+            line_linked: { enable: true, distance: 140, color: '#ffffff', opacity: 0.1, width: 1 },
+            move: { enable: true, speed: 1.5, random: true }
+        },
+        interactivity: {
+            events: { onhover: { enable: true, mode: 'grab' }, onclick: { enable: true, mode: 'push' } }
+        },
+        retina_detect: true
+    });
+
+    // Hero Slider
+    const heroSlides = document.querySelectorAll('.hero-slide');
+    const heroDots   = document.querySelectorAll('.hero-dot');
+    const slideData  = [
+        { title: 'Technology &amp; <span class="accent">Electronics</span> Import', desc: 'Latest laptops, servers, networking gear, CCTV systems, and IT equipment sourced from trusted global suppliers.' },
+        { title: 'Building <span class="accent">Materials</span> &amp; Construction', desc: 'Cement, steel, pipes, wiring, tools and all construction essentials for your projects, delivered reliably.' },
+        { title: 'Cars &amp; <span class="accent">Automotive</span> Spare Parts', desc: 'Vehicles, engines, transmissions, tyres, batteries and genuine spare parts from verified international sources.' }
+    ];
+    let currentSlide = 0, slideTimer;
+
+    function goToSlide(n) {
+        heroSlides[currentSlide].classList.remove('active');
+        heroDots[currentSlide].classList.remove('active');
+        currentSlide = (n + heroSlides.length) % heroSlides.length;
+        heroSlides[currentSlide].classList.add('active');
+        heroDots[currentSlide].classList.add('active');
+        document.getElementById('heroTitle').innerHTML = slideData[currentSlide].title;
+        document.getElementById('heroDesc').textContent = slideData[currentSlide].desc.replace(/<[^>]+>/g, '');
+    }
+
+    function restartTimer() {
+        clearInterval(slideTimer);
+        slideTimer = setInterval(() => goToSlide(currentSlide + 1), 5500);
+    }
+
+    restartTimer();
+    document.getElementById('heroNext').addEventListener('click', () => { goToSlide(currentSlide + 1); restartTimer(); });
+    document.getElementById('heroPrev').addEventListener('click', () => { goToSlide(currentSlide - 1); restartTimer(); });
+    heroDots.forEach((dot, i) => dot.addEventListener('click', () => { goToSlide(i); restartTimer(); }));
+
+    // Counter Animation
+    const counterObs = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            const el = entry.target;
+            const target = parseInt(el.dataset.target);
+            let current = 0;
+            const step = target / 80;
+            const interval = setInterval(() => {
+                current = Math.min(current + step, target);
+                el.textContent = Math.floor(current);
+                if (current >= target) clearInterval(interval);
+            }, 18);
+            counterObs.unobserve(el);
+        });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.stat-num[data-target]').forEach(el => counterObs.observe(el));
+</script>
+</body>
+</html>
