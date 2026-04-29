@@ -402,16 +402,21 @@ session_start();
         .hero-slide::after {
             content: '';
             position: absolute; inset: 0;
-            background: linear-gradient(120deg, rgba(10,22,40,0.82) 0%, rgba(10,22,40,0.45) 60%, rgba(10,22,40,0.2) 100%);
+            background: linear-gradient(120deg, rgba(10,22,40,0.75) 0%, rgba(10,22,40,0.4) 60%, rgba(10,22,40,0.15) 100%);
         }
         .hero-slide.active { opacity: 1; }
 
-        #particles-js {
-            position: absolute; inset: 0; z-index: 1;
-        }
+        /* Centered content for all banners */
         .hero-content-wrap {
             position: absolute; inset: 0; z-index: 2;
             display: flex; align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .hero-text-center {
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
         }
         .hero-tag {
             display: inline-flex; align-items: center; gap: 8px;
@@ -426,23 +431,23 @@ session_start();
         }
         .hero-title {
             font-family: var(--font-display);
-            font-size: clamp(2.4rem, 6vw, 4.8rem);
+            font-size: clamp(1.8rem, 4.5vw, 3.5rem);
             font-weight: 800; color: white;
-            line-height: 1.08; margin-bottom: 20px;
+            line-height: 1.2; margin-bottom: 20px;
         }
         .hero-title .accent { color: var(--orange); }
         .hero-desc {
-            font-size: 1.05rem; color: rgba(255,255,255,0.75);
-            max-width: 520px; line-height: 1.75;
-            margin-bottom: 36px;
+            font-size: 0.95rem; color: rgba(255,255,255,0.85);
+            max-width: 600px; line-height: 1.7;
+            margin: 0 auto 36px;
         }
-        .hero-cta-group { display: flex; gap: 14px; flex-wrap: wrap; }
+        .hero-cta-group { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
         .btn-hero-primary {
             font-family: var(--font-display); font-weight: 700;
-            font-size: 0.9rem; letter-spacing: 0.5px;
+            font-size: 0.85rem; letter-spacing: 0.5px;
             background: linear-gradient(135deg, var(--orange), var(--orange-dark));
             color: white; border: none; border-radius: 10px;
-            padding: 14px 30px;
+            padding: 12px 28px;
             transition: all 0.35s var(--ease-bounce);
             text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
         }
@@ -452,10 +457,10 @@ session_start();
         }
         .btn-hero-outline {
             font-family: var(--font-display); font-weight: 700;
-            font-size: 0.9rem; letter-spacing: 0.5px;
+            font-size: 0.85rem; letter-spacing: 0.5px;
             background: transparent;
             color: white; border: 2px solid rgba(255,255,255,0.5);
-            border-radius: 10px; padding: 12px 28px;
+            border-radius: 10px; padding: 10px 26px;
             transition: all 0.35s var(--ease-smooth);
             text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
         }
@@ -509,6 +514,10 @@ session_start();
             50% { transform: scaleY(0.5); opacity: 0.4; }
         }
 
+        #particles-js {
+            position: absolute; inset: 0; z-index: 1;
+        }
+
         /* ─── SECTION HEADER ─── */
         .section-tag {
             display: inline-block;
@@ -544,7 +553,6 @@ session_start();
                 radial-gradient(ellipse 60% 70% at 80% 50%, rgba(255,107,26,0.25) 0%, transparent 65%),
                 radial-gradient(ellipse 50% 60% at 50% 0%, rgba(139,92,246,0.2) 0%, transparent 60%);
         }
-        /* animated floating orbs */
         .stats-section::after {
             content: '';
             position: absolute; top: -60px; right: -60px;
@@ -611,7 +619,7 @@ session_start();
         .stat-item:nth-child(4) .stat-num { color: #67E8F9; }
         .stat-label { font-size: 0.83rem; color: rgba(255,255,255,0.5); letter-spacing: 0.5px; position: relative; z-index: 1; }
 
-        /* ─── ABOUT / INFO ─── */
+        /* ─── ABOUT / INFO SECTION WITH LINKS ─── */
         .about-section {
             padding: 110px 0;
             background: linear-gradient(160deg, #EEF2FF 0%, #F0F4FF 40%, #FFF7F0 100%);
@@ -633,6 +641,23 @@ session_start();
             border-radius: 50%;
             animation: floatOrb 12s ease-in-out infinite reverse;
         }
+        
+        /* Connection Lines */
+        .connection-lines {
+            position: relative;
+            margin-bottom: 40px;
+        }
+        .connection-lines::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--orange), var(--orange), transparent);
+            transform: translateY(-50%);
+            z-index: 0;
+        }
         .info-card {
             background: white;
             border: 1px solid rgba(255,255,255,0.8);
@@ -640,9 +665,10 @@ session_start();
             padding: 40px 36px;
             height: 100%;
             transition: all 0.45s var(--ease-smooth);
-            position: relative; overflow: hidden;
+            position: relative;
+            overflow: hidden;
             box-shadow: 0 4px 24px rgba(0,0,0,0.04);
-            z-index: 1;
+            z-index: 2;
         }
         .info-card::before {
             content: '';
@@ -667,6 +693,26 @@ session_start();
             border-color: rgba(255,255,255,1);
         }
         .info-card:hover::after { opacity: 1; }
+        .info-card .btn-link-card {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: var(--off-white);
+            border-radius: 50px;
+            color: var(--orange);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s var(--ease-bounce);
+        }
+        .info-card .btn-link-card:hover {
+            background: var(--orange);
+            color: white;
+            gap: 12px;
+            padding-left: 25px;
+        }
         .ic-icon {
             width: 66px; height: 66px;
             border-radius: 18px;
@@ -728,7 +774,6 @@ session_start();
                 radial-gradient(ellipse 50% 40% at 100% 50%, rgba(139,92,246,0.18) 0%, transparent 60%),
                 radial-gradient(ellipse 40% 35% at 50% 100%, rgba(255,107,26,0.12) 0%, transparent 60%);
         }
-        /* animated star dots */
         .categories-section::after {
             content: '';
             position: absolute; inset: 0;
@@ -750,7 +795,6 @@ session_start();
             position: absolute; inset: 0; border-radius: 20px;
             opacity: 0; transition: opacity 0.4s;
         }
-        /* unique gradient per card */
         .cat-card[data-color="blue"]::before   { background: linear-gradient(135deg, rgba(37,99,235,0.18), rgba(37,99,235,0.04)); }
         .cat-card[data-color="orange"]::before { background: linear-gradient(135deg, rgba(255,107,26,0.18), rgba(255,107,26,0.04)); }
         .cat-card[data-color="purple"]::before { background: linear-gradient(135deg, rgba(139,92,246,0.18), rgba(139,92,246,0.04)); }
@@ -769,7 +813,6 @@ session_start();
             transition: all 0.4s var(--ease-bounce);
             position: relative; z-index: 1;
         }
-        /* colored icon backgrounds */
         .cat-card[data-color="blue"]   .cat-icon-wrap { background: linear-gradient(135deg, #2563EB, #1D4ED8); box-shadow: 0 8px 20px rgba(37,99,235,0.45); }
         .cat-card[data-color="orange"] .cat-icon-wrap { background: linear-gradient(135deg, #FF6B1A, #E8500A); box-shadow: 0 8px 20px rgba(255,107,26,0.45); }
         .cat-card[data-color="purple"] .cat-icon-wrap { background: linear-gradient(135deg, #8B5CF6, #7C3AED); box-shadow: 0 8px 20px rgba(139,92,246,0.45); }
@@ -1031,13 +1074,13 @@ session_start();
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 767px) {
-            .hero-title { font-size: 2rem; }
+            .hero-title { font-size: 1.8rem; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .newsletter-form { flex-direction: column; }
         }
         @media (max-width: 576px) {
             .stats-grid { grid-template-columns: 1fr 1fr; }
-            .hero-cta-group { flex-direction: column; }
+            .hero-cta-group { flex-direction: column; align-items: center; }
         }
     </style>
 </head>
@@ -1061,7 +1104,7 @@ session_start();
         <div class="d-flex align-items-center justify-content-between" style="position:relative;">
 
             <!-- Brand -->
-            <a href="#" class="nav-brand">
+            <a href="index.php" class="nav-brand">
                 <div class="nav-logo"><i class="fas fa-ship"></i></div>
                 <div class="nav-brand-text">
                     <h2>Cendelina Trading Ltd</h2>
@@ -1077,11 +1120,7 @@ session_start();
             <!-- Nav menu -->
             <div class="nav-menu-wrap" id="navMenuWrap">
                 <ul class="nav-menu" id="navMenu">
-
-                    <!-- Home -->
-                    <li><a href="#">Home</a></li>
-
-                    <!-- About dropdown -->
+                    <li><a href="index.php">Home</a></li>
                     <li class="has-dropdown">
                         <a href="about.php" class="nav-top-link">
                             About <i class="fas fa-chevron-down caret"></i>
@@ -1097,8 +1136,6 @@ session_start();
                             <li><a href="about.php#process"><i class="fas fa-route"></i> Import Process</a></li>
                         </ul>
                     </li>
-
-                    <!-- Products mega-menu -->
                     <li class="has-dropdown has-mega">
                         <a href="products.php" class="nav-top-link">
                             Products <i class="fas fa-chevron-down caret"></i>
@@ -1106,38 +1143,14 @@ session_start();
                         <div class="nav-mega">
                             <div class="mega-header">Product Categories</div>
                             <div class="mega-grid">
-                                <a href="products.php?cat=tech" class="mega-item">
-                                    <div class="mega-item-icon"><i class="fas fa-laptop-code"></i></div>
-                                    <div class="mega-item-text"><strong>Technology &amp; IT</strong><span>Laptops, Servers, CCTV</span></div>
-                                </a>
-                                <a href="products.php?cat=building" class="mega-item">
-                                    <div class="mega-item-icon"><i class="fas fa-hard-hat"></i></div>
-                                    <div class="mega-item-text"><strong>Building Materials</strong><span>Cement, Steel, Pipes</span></div>
-                                </a>
-                                <a href="products.php?cat=auto" class="mega-item">
-                                    <div class="mega-item-icon"><i class="fas fa-car"></i></div>
-                                    <div class="mega-item-text"><strong>Cars &amp; Spares</strong><span>Vehicles, Parts, Tyres</span></div>
-                                </a>
-                                <a href="products.php?cat=office" class="mega-item">
-                                    <div class="mega-item-icon"><i class="fas fa-print"></i></div>
-                                    <div class="mega-item-text"><strong>Office Essentials</strong><span>Printers, Stationery</span></div>
-                                </a>
-                                <a href="products.php?cat=safety" class="mega-item">
-                                    <div class="mega-item-icon"><i class="fas fa-helmet-safety"></i></div>
-                                    <div class="mega-item-text"><strong>Safety Equipment</strong><span>Helmets, Vests, Boots</span></div>
-                                </a>
-                                <a href="products.php?cat=tools" class="mega-item">
-                                    <div class="mega-item-icon"><i class="fas fa-tools"></i></div>
-                                    <div class="mega-item-text"><strong>Machinery &amp; Tools</strong><span>Generators, Drills</span></div>
-                                </a>
-                                <a href="products.php?cat=furniture" class="mega-item">
-                                    <div class="mega-item-icon"><i class="fas fa-couch"></i></div>
-                                    <div class="mega-item-text"><strong>Furniture</strong><span>Desks, Chairs, Cabinets</span></div>
-                                </a>
-                                <a href="products.php?cat=general" class="mega-item">
-                                    <div class="mega-item-icon"><i class="fas fa-box-open"></i></div>
-                                    <div class="mega-item-text"><strong>General Trade</strong><span>FMCG &amp; Consumables</span></div>
-                                </a>
+                                <a href="products.php?cat=tech" class="mega-item"><div class="mega-item-icon"><i class="fas fa-laptop-code"></i></div><div class="mega-item-text"><strong>Technology &amp; IT</strong><span>Laptops, Servers, CCTV</span></div></a>
+                                <a href="products.php?cat=building" class="mega-item"><div class="mega-item-icon"><i class="fas fa-hard-hat"></i></div><div class="mega-item-text"><strong>Building Materials</strong><span>Cement, Steel, Pipes</span></div></a>
+                                <a href="products.php?cat=auto" class="mega-item"><div class="mega-item-icon"><i class="fas fa-car"></i></div><div class="mega-item-text"><strong>Cars &amp; Spares</strong><span>Vehicles, Parts, Tyres</span></div></a>
+                                <a href="products.php?cat=office" class="mega-item"><div class="mega-item-icon"><i class="fas fa-print"></i></div><div class="mega-item-text"><strong>Office Essentials</strong><span>Printers, Stationery</span></div></a>
+                                <a href="products.php?cat=safety" class="mega-item"><div class="mega-item-icon"><i class="fas fa-helmet-safety"></i></div><div class="mega-item-text"><strong>Safety Equipment</strong><span>Helmets, Vests, Boots</span></div></a>
+                                <a href="products.php?cat=tools" class="mega-item"><div class="mega-item-icon"><i class="fas fa-tools"></i></div><div class="mega-item-text"><strong>Machinery &amp; Tools</strong><span>Generators, Drills</span></div></a>
+                                <a href="products.php?cat=furniture" class="mega-item"><div class="mega-item-icon"><i class="fas fa-couch"></i></div><div class="mega-item-text"><strong>Furniture</strong><span>Desks, Chairs, Cabinets</span></div></a>
+                                <a href="products.php?cat=general" class="mega-item"><div class="mega-item-icon"><i class="fas fa-box-open"></i></div><div class="mega-item-text"><strong>General Trade</strong><span>FMCG &amp; Consumables</span></div></a>
                             </div>
                             <div class="mega-footer">
                                 <span style="font-size:0.78rem;color:rgba(255,255,255,0.35);">8 categories available</span>
@@ -1145,8 +1158,6 @@ session_start();
                             </div>
                         </div>
                     </li>
-
-                    <!-- Services dropdown -->
                     <li class="has-dropdown">
                         <a href="#" class="nav-top-link">
                             Services <i class="fas fa-chevron-down caret"></i>
@@ -1160,10 +1171,7 @@ session_start();
                             <li><a href="#"><i class="fas fa-search"></i> Product Sourcing</a></li>
                         </ul>
                     </li>
-
-                    <!-- Contact -->
                     <li><a href="contact.php">Contact</a></li>
-
                 </ul>
 
                 <!-- Actions -->
@@ -1171,7 +1179,7 @@ session_start();
                     <a href="admin-login.php" style="font-family:var(--font-display);font-size:0.8rem;font-weight:600;color:rgba(255,255,255,0.55);text-decoration:none;padding:8px 10px;border-radius:7px;transition:color 0.2s,background 0.2s;white-space:nowrap;" onmouseover="this.style.color='white';this.style.background='rgba(255,255,255,0.07)'" onmouseout="this.style.color='rgba(255,255,255,0.55)';this.style.background='transparent'">
                         <i class="fas fa-lock me-1"></i> Admin
                     </a>
-                    <a href="#" class="btn-quote">Get Quote <i class="fas fa-arrow-right"></i></a>
+                    <a href="inquire.php" class="btn-quote">Get Quote <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
 
@@ -1183,22 +1191,20 @@ session_start();
 <section class="hero">
     <div id="particles-js"></div>
     <div class="hero-slides">
-        <div class="hero-slide active" style="background-image:url('https://images.unsplash.com/photo-1518770660439-4636190af475?w=1600');"></div>
-        <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1600');"></div>
-        <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=1600');"></div>
+        <div class="hero-slide active" style="background-image:url('photo-1538370965046-79c0d6907d47.avif');"></div>
+        <div class="hero-slide" style="background-image:url('banner-living-room.jpg');"></div>
+        <div class="hero-slide" style="background-image:url('car-banner1.jpg');"></div>
     </div>
 
     <div class="hero-content-wrap">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-xl-7" id="heroText">
-                    <div class="hero-tag"><i class="fas fa-globe-africa"></i> <span>Serving South Sudan &amp; Beyond</span></div>
-                    <h1 class="hero-title" id="heroTitle">Technology &amp; <span class="accent">Electronics</span> Import</h1>
-                    <p class="hero-desc" id="heroDesc">Latest laptops, servers, networking gear, CCTV systems, and IT equipment sourced from trusted global suppliers with end-to-end logistics.</p>
-                    <div class="hero-cta-group">
-                        <a href="#" class="btn-hero-primary">Explore Products <i class="fas fa-arrow-right"></i></a>
-                        <a href="#" class="btn-hero-outline"><i class="fas fa-envelope"></i> Request Quote</a>
-                    </div>
+            <div class="hero-text-center" id="heroText">
+                <div class="hero-tag"><i class="fas fa-globe-africa"></i> <span>Serving South Sudan &amp; Beyond</span></div>
+                <h1 class="hero-title" id="heroTitle">Technology &amp; <span class="accent">Electronics</span> Import</h1>
+                <p class="hero-desc" id="heroDesc">Latest laptops, servers, networking gear, CCTV systems, and IT equipment sourced from trusted global suppliers with end-to-end logistics.</p>
+                <div class="hero-cta-group">
+                    <a href="products.php" class="btn-hero-primary">Explore Products <i class="fas fa-arrow-right"></i></a>
+                    <a href="inquire.php" class="btn-hero-outline"><i class="fas fa-envelope"></i> Request Quote</a>
                 </div>
             </div>
         </div>
@@ -1248,55 +1254,66 @@ session_start();
     </div>
 </section>
 
-<!-- ═══ ABOUT / INFO ═══ -->
+<!-- ═══ ABOUT / INFO SECTION WITH LINKS AND CONNECTIONS ═══ -->
 <section class="about-section">
     <div class="container">
         <div class="text-center mb-5" data-aos="fade-up">
             <div class="section-tag">Who We Are</div>
             <h2 class="section-title">Your Trusted Import &amp; <span class="accent">Logistics Partner</span></h2>
             <div class="divider-orange mx-auto"></div>
+            <p class="section-sub mt-3">Connecting South Sudan to global markets with reliable, transparent, and efficient logistics solutions.</p>
         </div>
 
-        <div class="row g-4">
-            <div class="col-lg-4" data-aos="fade-up" data-aos-delay="0">
-                <div class="info-card">
-                    <div class="ic-icon"><i class="fas fa-building"></i></div>
-                    <h3 class="ic-title">About Cendelina</h3>
-                    <p class="ic-text">A premier logistics and import company serving businesses across South Sudan and beyond. We specialise in sourcing high-quality products from verified global markets.</p>
-                    <ul class="feature-list">
-                        <li><i class="fas fa-check-circle"></i> Global Sourcing Network</li>
-                        <li><i class="fas fa-check-circle"></i> Quality Assured Products</li>
-                        <li><i class="fas fa-check-circle"></i> Reliable Delivery Timelines</li>
-                        <li><i class="fas fa-check-circle"></i> Dedicated Account Management</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-lg-4" data-aos="fade-up" data-aos-delay="120">
-                <div class="info-card">
-                    <div class="ic-icon"><i class="fas fa-ship"></i></div>
-                    <h3 class="ic-title">Our Import Process</h3>
-                    <p class="ic-text">Streamlined, transparent logistics from purchase order to your doorstep.</p>
-                    <div class="process-steps">
-                        <div class="step"><div class="step-num">1</div><span>Purchase Order Placement</span></div>
-                        <div class="step"><div class="step-num">2</div><span>Real-time Shipment Tracking</span></div>
-                        <div class="step"><div class="step-num">3</div><span>Customs Clearance</span></div>
-                        <div class="step"><div class="step-num">4</div><span>Warehouse Storage</span></div>
-                        <div class="step"><div class="step-num">5</div><span>Local Delivery</span></div>
+        <div class="connection-lines">
+            <div class="row g-4">
+                <!-- Card 1: About Cendelina - Links to About Page -->
+                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="0">
+                    <div class="info-card">
+                        <div class="ic-icon"><i class="fas fa-building"></i></div>
+                        <h3 class="ic-title">About Cendelina</h3>
+                        <p class="ic-text">A premier logistics and import company serving businesses across South Sudan and beyond since 2017. We specialise in sourcing high-quality products from verified global markets.</p>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-check-circle"></i> Global Sourcing Network</li>
+                            <li><i class="fas fa-check-circle"></i> Quality Assured Products</li>
+                            <li><i class="fas fa-check-circle"></i> Reliable Delivery Timelines</li>
+                            <li><i class="fas fa-check-circle"></i> Dedicated Account Management</li>
+                        </ul>
+                        <a href="about.php" class="btn-link-card">Learn More About Us <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-4" data-aos="fade-up" data-aos-delay="240">
-                <div class="info-card">
-                    <div class="ic-icon"><i class="fas fa-chart-line"></i></div>
-                    <h3 class="ic-title">Why Choose Us</h3>
-                    <ul class="feature-list">
-                        <li><i class="fas fa-check-circle"></i> End-to-end import tracking</li>
-                        <li><i class="fas fa-check-circle"></i> Dedicated system admin audit logs</li>
-                        <li><i class="fas fa-check-circle"></i> Competitive global pricing</li>
-                        <li><i class="fas fa-check-circle"></i> Reliable delivery timelines</li>
-                        <li><i class="fas fa-check-circle"></i> 24/7 customer support</li>
-                        <li><i class="fas fa-check-circle"></i> Quality guarantee</li>
-                    </ul>
+
+                <!-- Card 2: Import Process - Links to Services Page -->
+                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="120">
+                    <div class="info-card">
+                        <div class="ic-icon"><i class="fas fa-ship"></i></div>
+                        <h3 class="ic-title">Our Import Process</h3>
+                        <p class="ic-text">Streamlined, transparent logistics from purchase order to your doorstep. We handle everything so you can focus on your business.</p>
+                        <div class="process-steps">
+                            <div class="step"><div class="step-num">1</div><span>Purchase Order Placement</span></div>
+                            <div class="step"><div class="step-num">2</div><span>Real-time Shipment Tracking</span></div>
+                            <div class="step"><div class="step-num">3</div><span>Customs Clearance</span></div>
+                            <div class="step"><div class="step-num">4</div><span>Warehouse Storage</span></div>
+                            <div class="step"><div class="step-num">5</div><span>Local Delivery</span></div>
+                        </div>
+                        <a href="inquire.php" class="btn-link-card">Request a Quote <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- Card 3: Why Choose Us - Links to Quote/Contact -->
+                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="240">
+                    <div class="info-card">
+                        <div class="ic-icon"><i class="fas fa-chart-line"></i></div>
+                        <h3 class="ic-title">Why Choose Us</h3>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-check-circle"></i> End-to-end import tracking</li>
+                            <li><i class="fas fa-check-circle"></i> Dedicated system admin audit logs</li>
+                            <li><i class="fas fa-check-circle"></i> Competitive global pricing</li>
+                            <li><i class="fas fa-check-circle"></i> Reliable delivery timelines</li>
+                            <li><i class="fas fa-check-circle"></i> 24/7 customer support</li>
+                            <li><i class="fas fa-check-circle"></i> Quality guarantee</li>
+                        </ul>
+                        <a href="contact.php" class="btn-link-card">Contact Our Team <i class="fas fa-arrow-right"></i></a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1314,56 +1331,56 @@ session_start();
 
         <div class="row g-4">
             <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="0">
-                <div class="cat-card">
+                <div class="cat-card" data-color="blue">
                     <div class="cat-icon-wrap"><i class="fas fa-laptop-code"></i></div>
                     <div class="cat-title">Technology &amp; IT</div>
                     <div class="cat-sub">Laptops, servers, networking, CCTV</div>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="80">
-                <div class="cat-card">
+                <div class="cat-card" data-color="orange">
                     <div class="cat-icon-wrap"><i class="fas fa-hard-hat"></i></div>
                     <div class="cat-title">Building Materials</div>
                     <div class="cat-sub">Cement, steel, pipes, wiring</div>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="160">
-                <div class="cat-card">
+                <div class="cat-card" data-color="purple">
                     <div class="cat-icon-wrap"><i class="fas fa-car"></i></div>
                     <div class="cat-title">Cars &amp; Spare Parts</div>
                     <div class="cat-sub">Vehicles, engines, tyres, batteries</div>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="240">
-                <div class="cat-card">
+                <div class="cat-card" data-color="cyan">
                     <div class="cat-icon-wrap"><i class="fas fa-print"></i></div>
                     <div class="cat-title">Office Essentials</div>
                     <div class="cat-sub">Printers, paper, stationery</div>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="0">
-                <div class="cat-card">
+                <div class="cat-card" data-color="green">
                     <div class="cat-icon-wrap"><i class="fas fa-helmet-safety"></i></div>
                     <div class="cat-title">Safety Equipment</div>
                     <div class="cat-sub">Helmets, boots, safety vests</div>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="80">
-                <div class="cat-card">
+                <div class="cat-card" data-color="pink">
                     <div class="cat-icon-wrap"><i class="fas fa-tools"></i></div>
                     <div class="cat-title">Machinery &amp; Tools</div>
                     <div class="cat-sub">Generators, drills, compressors</div>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="160">
-                <div class="cat-card">
+                <div class="cat-card" data-color="gold">
                     <div class="cat-icon-wrap"><i class="fas fa-couch"></i></div>
                     <div class="cat-title">Furniture</div>
                     <div class="cat-sub">Desks, chairs, filing cabinets</div>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="240">
-                <div class="cat-card">
+                <div class="cat-card" data-color="red">
                     <div class="cat-icon-wrap"><i class="fas fa-box-open"></i></div>
                     <div class="cat-title">General Trade</div>
                     <div class="cat-sub">FMCG, consumables &amp; more</div>
@@ -1376,6 +1393,7 @@ session_start();
 <!-- ═══ SHOWCASE ═══ -->
 <section class="showcase-section">
     <div class="container position-relative">
+
         <div class="text-center mb-5" data-aos="fade-up">
             <div class="section-tag" style="color:var(--orange)">Featured</div>
             <h2 class="section-title" style="color:white">What We <span class="accent">Deliver</span></h2>
@@ -1384,13 +1402,13 @@ session_start();
         <div class="row g-4">
             <div class="col-md-4" data-aos="fade-up" data-aos-delay="0">
                 <div class="showcase-card">
-                    <div class="showcase-img"><img src="https://images.unsplash.com/photo-1558002038-1055907df827?w=600" alt="Warehouse"></div>
+                    <div class="showcase-img"><img src="Modern Warehousing.jpg" alt="Warehouse"></div>
                     <div class="showcase-overlay"><h4>Modern Warehousing</h4><p>State-of-the-art storage facilities</p></div>
                 </div>
             </div>
             <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
                 <div class="showcase-card">
-                    <div class="showcase-img"><img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600" alt="Logistics"></div>
+                    <div class="showcase-img"><img src="Efficient Logistic.avif" alt="Logistics"></div>
                     <div class="showcase-overlay"><h4>Efficient Logistics</h4><p>Fast and reliable delivery network</p></div>
                 </div>
             </div>
@@ -1559,7 +1577,7 @@ session_start();
             <div class="col-lg-2 col-md-4 col-6" data-aos="fade-up" data-aos-delay="100">
                 <div class="footer-heading">Quick Links</div>
                 <ul class="footer-links">
-                    <li><a href="#">Home</a></li>
+                    <li><a href="index.php">Home</a></li>
                     <li><a href="about.php">About Us</a></li>
                     <li><a href="products.php">Products</a></li>
                     <li><a href="contact.php">Contact</a></li>
@@ -1582,7 +1600,7 @@ session_start();
             <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="300">
                 <div class="footer-heading">Contact</div>
                 <div class="footer-contact-item"><i class="fas fa-envelope"></i><span>info@cendelina.com</span></div>
-                <div class="footer-contact-item"><i class="fas fa-phone"></i><span>+211 XXX XXX XXX</span></div>
+                <div class="footer-contact-item"><i class="fas fa-phone"></i><span>+211 919 427 114</span></div>
                 <div class="footer-contact-item"><i class="fas fa-map-marker-alt"></i><span>Juba, South Sudan</span></div>
                 <div class="mt-3"><span class="footer-badge"><i class="fas fa-shield-alt"></i> System Monitored 24/7</span></div>
             </div>
@@ -1629,7 +1647,7 @@ session_start();
         togglerIcon.className = open ? 'fas fa-times' : 'fas fa-bars';
     });
 
-    // Mobile sub-menu accordion (dropdown items with children)
+    // Mobile sub-menu accordion
     if (window.innerWidth <= 991) {
         document.querySelectorAll('#navMenu .has-dropdown > .nav-top-link').forEach(link => {
             link.addEventListener('click', e => {
@@ -1648,7 +1666,7 @@ session_start();
         }
     });
 
-    // Desktop: position mega-menu so it doesn't go off-screen
+    // Desktop: position mega-menu
     const megaEl = document.querySelector('.nav-mega');
     const megaParent = document.querySelector('.has-mega');
     if (megaEl && megaParent) {
@@ -1687,7 +1705,7 @@ session_start();
     const heroSlides = document.querySelectorAll('.hero-slide');
     const heroDots   = document.querySelectorAll('.hero-dot');
     const slideData  = [
-        { title: 'Technology &amp; <span class="accent">Electronics</span> Import', desc: 'Latest laptops, servers, networking gear, CCTV systems, and IT equipment sourced from trusted global suppliers.' },
+        { title: 'Technology &amp; <span class="accent">Electronics</span>', desc: 'Latest laptops, servers, networking gear, CCTV systems, and IT equipment sourced from trusted global suppliers.' },
         { title: 'Building <span class="accent">Materials</span> &amp; Construction', desc: 'Cement, steel, pipes, wiring, tools and all construction essentials for your projects, delivered reliably.' },
         { title: 'Cars &amp; <span class="accent">Automotive</span> Spare Parts', desc: 'Vehicles, engines, transmissions, tyres, batteries and genuine spare parts from verified international sources.' }
     ];
@@ -1700,7 +1718,7 @@ session_start();
         heroSlides[currentSlide].classList.add('active');
         heroDots[currentSlide].classList.add('active');
         document.getElementById('heroTitle').innerHTML = slideData[currentSlide].title;
-        document.getElementById('heroDesc').textContent = slideData[currentSlide].desc.replace(/<[^>]+>/g, '');
+        document.getElementById('heroDesc').textContent = slideData[currentSlide].desc;
     }
 
     function restartTimer() {
